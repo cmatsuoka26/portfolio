@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Portfolio</title>
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --card: #11131a;
+      --muted: #9aa3b2;
+      --text: #e6e9ef;
+      --brand: #6ea8fe;
+      --brand-2: #7ee787;
+      --ring: rgba(110,168,254,.4);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f7f8fb;
+        --card: #ffffff;
+        --muted: #64748b;
+        --text: #0f172a;
+        --brand: #2563eb;
+        --brand-2: #16a34a;
+        --ring: rgba(37,99,235,.2);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(110,168,254,.15), transparent 60%),
+                  radial-gradient(900px 500px at 120% 10%, rgba(126,231,135,.14), transparent 60%),
+                  var(--bg);
+    }
+
+    .container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 8px;
+      position: sticky;
+      top: 0;
+      background: color-mix(in oklab, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 8%, transparent);
+    }
+
+    .brand{
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .logo{
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 30px -10px var(--ring), inset 0 0 0 1px color-mix(in oklab, var(--text) 10%, transparent);
+    }
+
+    .brand h1{
+      font-size: 18px; letter-spacing: .3px; margin: 0;
+    }
+
+    /* Tabs */
+    .tabs{
+      display: flex; gap: 10px; align-items: center;
+      background: color-mix(in oklab, var(--card) 65%, transparent);
+      padding: 6px; border-radius: 14px;
+      box-shadow: 0 6px 24px -12px rgba(0,0,0,.35), 0 0 0 1px color-mix(in oklab, var(--text) 10%, transparent);
+    }
+
+    .tab-btn{
+      position: relative;
+      border: 0; background: transparent; color: var(--text);
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+      font-weight: 600; letter-spacing: .2px;
+      transition: transform .15s ease, background .2s ease;
+      isolation: isolate;
+    }
+    .tab-btn:hover{ transform: translateY(-1px); }
+    .tab-btn.active{
+      background: color-mix(in oklab, var(--brand) 18%, transparent);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    /* Hero */
+    .hero{
+      display: grid; gap: 14px; margin: 28px 0 20px;
+      padding: 26px; border-radius: 18px;
+      background: linear-gradient(180deg, color-mix(in oklab, var(--card) 80%, transparent), color-mix(in oklab, var(--card) 95%, var(--bg)));
+      border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+      overflow: hidden; position: relative;
+    }
+    .hero::after{
+      content: ""; position: absolute; inset: -40px -60px auto auto; width: 240px; height: 240px;
+      background: radial-gradient(closest-side, color-mix(in oklab, var(--brand) 60%, transparent), transparent 70%);
+      filter: blur(24px); opacity: .25; pointer-events: none;
+      transform: translateY(-10px);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float{ 50%{ transform: translateY(10px) } }
+
+    .eyebrow{ color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; }
+    .title{ font-size: clamp(28px, 4vw, 44px); line-height: 1.1; margin: 0; }
+    .sub{ color: var(--muted); max-width: 65ch; }
+
+    /* Panels */
+    .panel{ display: none; animation: fade .35s ease; }
+    .panel.active{ display: block; }
+    @keyframes fade{ from{ opacity: 0; transform: translateY(6px) } to{ opacity: 1; transform: translateY(0) } }
+
+    /* About */
+    .about-grid{ display: grid; gap: 16px; grid-template-columns: 1.1fr .9fr; }
+    .card{
+      background: var(--card);
+      border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+      border-radius: 16px; padding: 20px;
+      box-shadow: 0 10px 30px -18px rgba(0,0,0,.5);
+    }
+    .chips{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip{ font-size: 13px; padding: 6px 10px; border-radius: 999px; background: color-mix(in oklab, var(--brand) 18%, transparent); border: 1px solid var(--ring); }
+
+    /* Projects */
+    .projects-grid{ display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
+    .project-card{
+      grid-column: span 6;
+      display: grid; gap: 12px;
+      background: var(--card);
+      padding: 16px; border-radius: 16px;
+      border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .project-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px -20px rgba(0,0,0,.65);
+      border-color: color-mix(in oklab, var(--brand) 35%, var(--text) 8%);
+    }
+    .project-title{ margin: 0; font-size: 18px; }
+    .project-desc{ color: var(--muted); margin: 0; }
+    .project-footer{ display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+    .tag{ font-size: 12px; background: color-mix(in oklab, var(--text) 8%, transparent); padding: 4px 8px; border-radius: 999px; }
+
+    .btn{
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 50%, transparent), color-mix(in oklab, var(--brand) 15%, transparent));
+      border: 1px solid var(--ring); color: var(--text);
+      padding: 8px 12px; border-radius: 10px; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 20px -10px var(--ring); }
+
+    footer{ color: var(--muted); text-align: center; padding: 40px 0 20px; }
+
+    @media (max-width: 900px){
+      .about-grid{ grid-template-columns: 1fr; }
+      .project-card{ grid-column: span 12; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>My Portfolio</h1>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Page sections">
+        <button class="tab-btn active" data-tab="about" role="tab" aria-selected="true">About Me</button>
+        <button class="tab-btn" data-tab="projects" role="tab" aria-selected="false">Projects</button>
+      </nav>
+    </header>
+
+    <section class="hero" id="hero">
+      <span class="eyebrow">Welcome</span>
+      <h2 class="title">Hi, I'm <span id="name-slot">Cayden</span> 👋</h2>
+      <p class="sub">I love building clean, fast web experiences and solving real problems with code. Explore my background and the projects I'm proud of below.</p>
+    </section>
+
+    <!-- About Panel -->
+    <section id="panel-about" class="panel active" aria-labelledby="About Me">
+      <div class="about-grid">
+        <article class="card">
+          <h3>About Me</h3>
+          <p>Hello! I'm a developer/designer based wherever the Wi‑Fi is good. I enjoy creating elegant UI, performant apps, and delightful interactions.</p>
+          <div class="chips">
+            <!-- Edit your tech stack here -->
+            <span class="chip">JavaScript</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">Python</span>
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">C</span>
+            <span class="chip">Java</span>
+          </div>
+        </article>
+        <aside class="card">
+          <h3>Contact</h3>
+          <p class="sub">Open to internships, collaborations, and hackathons.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px">
+            <a class="btn" href="#" target="_blank" rel="noopener">Email</a>
+            <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="#" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Projects Panel -->
+    <section id="panel-projects" class="panel" aria-labelledby="Projects">
+      <div id="projects" class="projects-grid"></div>
+    </section>
+
+    <footer>© <span id="year"></span> Cayden Matsuoka</footer>
+  </div>
+
+  <script>
+    // ====== QUICK START: Add projects here ======
+    // Add, remove, or edit objects in the array below.
+    // Fields: title (string), description (string), tags (array of strings), link (URL string), cols (12-grid span: 6 or 12)
+    const PROJECTS = [
+      {
+        title: "Portfolio Website",
+        description: "A sleek, responsive portfolio built with vanilla JS and some tasteful micro‑interactions.",
+        tags: ["HTML", "CSS", "JavaScript"],
+        link: "#",
+        cols: 6,
+      },
+      {
+        title: "2048 Game",
+        description: "My take on the classic 2048 with keyboard and touch controls, undo, and smart animations.",
+        tags: ["JavaScript", "Canvas"],
+        link: "#",
+        cols: 6,
+      },
+      {
+        title: "API Explorer",
+        description: "A minimalist tool to test REST endpoints, save requests, and visualize JSON.",
+        tags: ["TypeScript", "Fetch API"],
+        link: "#",
+        cols: 12,
+      },
+    ];
+    // ============================================
+
+    // Accessibility-friendly tab logic
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = {
+      about: document.getElementById('panel-about'),
+      projects: document.getElementById('panel-projects')
+    };
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        const id = btn.dataset.tab;
+        Object.values(panels).forEach(p => p.classList.remove('active'));
+        panels[id].classList.add('active');
+        // smooth scroll the top of the content into view for mobile
+        panels[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Render projects
+    const grid = document.getElementById('projects');
+    function renderProjects(list){
+      grid.innerHTML = '';
+      list.forEach(p => {
+        const card = document.createElement('article');
+        card.className = 'project-card';
+        card.style.gridColumn = `span ${p.cols === 12 ? 12 : 6}`;
+        card.innerHTML = `
+          <h4 class="project-title">${p.title}</h4>
+          <p class="project-desc">${p.description}</p>
+          <div class="project-footer">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              ${(p.tags||[]).map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+            ${p.link ? `<a class="btn" href="${p.link}" target="_blank" rel="noopener" aria-label="Open ${p.title}">Open</a>` : ''}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    renderProjects(PROJECTS);
+
+    // Set dynamic bits
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // OPTIONAL: Personalize quickly
+    // document.getElementById('name-slot').textContent = 'Your Name';
+  </script>
+</body>
+</html>
